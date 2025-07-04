@@ -27,7 +27,7 @@ pipeline {
         stage ('Desplegar contenedor'){
             steps {
                 
-                    bat "docker run --network ${DOCKER_NETWORK}"
+                    bat "docker run --network ${DOCKER_NETWORK} --name ${CONTAINER_NAME} -p ${OST_PORT}:${TAINER_PORT} -d ${DOCKER_IMAGE}"
                 
 
             }
