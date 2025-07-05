@@ -3,31 +3,36 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = 'apimonedastt'
-        CONTAINER_NAME = 'dockerapimonedastt'
+        CONTAINER_NAME = 'docker'
         DOCKER_NETWORK = 'dockermonedas_red'
-        HOST_PORT = '9080'
+        HOST_PORT = '9090'
         CONTAINER_PORT = '8080'
     }
 
     stages {
-        stage('Construir imagen') {
+               stage('Construir imagen Docker') {
             steps {
-                bat "docker build . -t ${DOCKER_IMAGE}"
+               
+                    bat "docker build . -t ${DOCKER_IMAGE}"
+                
             }
         }
-        stage('Detener contenedor existente') {
+
+        stage('Limpiar contenedor existente') {
             steps {
-                // Detener el contenedor si existe, pero siempre retornar éxito
-                bat '''
-                    docker stop ${CONTAINER_NAME} || echo "No se pudo detener el contenedor porque no existe."
-                    exit 0
-                '''
-                bat '''
-                    docker rm ${CONTAINER_NAME} || echo "No se pudo eliminar el contenedor porque no existe."
-                    exit 0
-                '''
+                script {
+                    catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
+                        bat """
+                        docker container inspect ${CONTAINER_NAME} >nul 2>&1 && (
+                            docker container stop ${CONTAINER_NAME}
+                            docker container rm ${CONTAINER_NAME}
+                        ) || echo "No existe el contenedor '${CONTAINER_NAME}'."
+                        """
+                    }
+                }
             }
         }
+
         stage('Desplegar contenedor') {
             steps {
                 bat "docker run --network ${DOCKER_NETWORK} --name ${CONTAINER_NAME} -p ${HOST_PORT}:${CONTAINER_PORT} -d ${DOCKER_IMAGE}"
