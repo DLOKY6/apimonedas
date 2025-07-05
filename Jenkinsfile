@@ -10,7 +10,7 @@ pipeline {
     }
 
     stages {
-               stage('Construir imagen Docker') {
+        stage('Construir imagen Docker') {
             steps {
                
                     bat "docker build . -t ${DOCKER_IMAGE}"
