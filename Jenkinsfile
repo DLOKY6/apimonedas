@@ -13,7 +13,7 @@ pipeline {
         stage('Construir imagen Docker') {
             steps {
                
-                    bat "docker build . -t ${DOCKER_IMAGE}"
+                    bat "docker build . -t ${DOCKER_IMAGE}:${DOCKER_TAG} -f Dockerfile ."
                 
             }
         }
