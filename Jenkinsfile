@@ -3,9 +3,9 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = 'apimonedastt'
-        CONTAINER_NAME = 'docker'
+        CONTAINER_NAME = 'dockerapimonedastt'
         DOCKER_NETWORK = 'dockermonedas_red'
-        HOST_PORT = '9090'
+        HOST_PORT = '9080'
         CONTAINER_PORT = '8080'
     }
 
