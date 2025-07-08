@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = 'apimonedastt'
+        DOCKER_IMAGE = 'davidpaisa/api-monedas-java'
         CONTAINER_NAME = 'dockerapimonedastt'
         DOCKER_NETWORK = 'dockermonedas_red'
         HOST_PORT = '9080'
